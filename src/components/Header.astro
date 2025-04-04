@@ -1,0 +1,59 @@
+---
+import config from "src/config.ts";
+import ThemeToggle from "@components/ThemeToggle.svelte";
+import Search from "@components/Search.svelte";
+---
+<Search client:load/>
+
+
+<header
+  class="onloadY flex justify-center bg-bgColor dark:bg-bgColordark shadow-md top-0 fixed mb-4 w-full z-10 h-20 rounded-bl-lg rounded-br-lg a-300"
+>
+  <div class="flex justify-between items-center h-20 max-w-7xl w-full">
+    <div class="flex justify-center w-20% sm:w-25% active:scale-90 transition-transform duration-300">
+      <a href="/" class="flex items-center no-underline">
+        <img src={config.favicon} alt="left-header-logo" fetchpriority="high" class="h-8 rounded-full object-cover h-8 w-8" />
+        <div
+          class="text-textColor dark:text-textColordark font-noto font-black ml-3 text-2xl hidden sm:block"
+        >
+          {config.USERNAME_LEFT}<span class="text-themeColor font-noto"
+            >{config.USERNAME_RIGHT}</span
+          >
+        </div>
+      </a>
+    </div>
+    <nav>
+      <ul class="flex items-center pl-2 mr-4 space-x-2 sm:space-x-7 list-none">
+        {
+          ["archives", "categories", "tags"].map((item) => (
+            <li>
+              <a
+                href={`/${item}`}
+                class="text-sm tracking-wider leading-20 font-bold font-noto text-textColor dark:text-textColordark a-300
+                hover:text-themeColor no-underline"
+              >
+                {item.toLocaleUpperCase()}
+              </a>
+            </li>
+          ))
+        }
+        <li class="flex">
+          <ThemeToggle client:load />
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+{import.meta.env.PROD && <script is:inline define:vars={{scriptUrl: '/pagefind/pagefind.js'}}>
+  async function loadPagefind() {
+      const pagefind = await import(scriptUrl)
+      await pagefind.options({
+          'excerptLength': 20
+      })
+      pagefind.init()
+      window.pagefind = pagefind
+      pagefind.search('')     // speed up the first search
+  }
+  loadPagefind()
+  </script>}

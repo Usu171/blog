@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ButtonList from "@components/ButtonList.astro";
+
+const allPosts = await getCollection("blog");
+
+const yearCounts = allPosts.reduce((acc: Record<string, number>, post) => {
+  const year = new Date(post.data.date).getFullYear();
+  if (!acc[year]) {
+    acc[year] = 0;
+  }
+  acc[year] += 1;
+  return acc;
+}, {});
+
+const yearArray = Object.entries(yearCounts).map(([year, count]) => ({
+  item: year,
+  count: count,
+}));
+
+yearArray.sort((a, b) => parseInt(b.item) - parseInt(a.item));
+const title = "Archives";
+---
+
+<BaseLayout title={title}>
+  <ButtonList title={title} items={yearArray} url="archives" />
+</BaseLayout>

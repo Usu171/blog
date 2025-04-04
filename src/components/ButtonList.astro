@@ -1,0 +1,18 @@
+---
+const { title, items , url } = Astro.props;
+---
+
+<h1 class="text-textColor dark:text-textColordark ml-4">{title}</h1>
+<div class="flex flex-wrap justify-center gap-4">
+  {
+    items.map(({ item, count }) => (
+      <a
+        href={`/${url}/${item}/`}
+        class="bg-bgColor dark:bg-bgColordark rounded-md shadow-md p-4 text-center a-300 active:scale-90
+     text-textColor dark:text-textColordark hover:bg-bgColorh dark:hover:bg-bgColorhdark no-underline"
+      >
+        {item} ({count})
+      </a>
+    ))
+  }
+</div>

@@ -1,0 +1,14 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+const { title, description, image, isPost } = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  isPost={isPost}
+>
+  <slot />
+  <Fragment slot="sidebarb"><slot name="sidebarb" /></Fragment>
+</BaseLayout>

@@ -1,0 +1,278 @@
+body {
+  --uno: ma-0 bg-bgColor2 dark:bg-bgColor2dark;
+}
+body.dark {
+  --uno: bg-bgColor2dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --uno: font-sans;
+}
+
+
+
+.dark {
+  color-scheme: dark;
+}
+
+mark {
+  --uno: text-themeColor bg-transparent;
+}
+
+.MDpost {
+  --uno: text-textColor2 dark:text-textColor2dark leading-normal break-words;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.katex-display {
+  --uno: text-textColor2 dark:text-textColor2dark;
+}
+
+
+.MDpost h1,
+.MDpost h2,
+.MDpost h3,
+.MDpost h4,
+.MDpost h5 {
+  --uno: text-textColor dark:text-textColordark;
+}
+
+.MDpost h1 {
+  --uno: text-10;
+}
+
+.MDpost h2 {
+  --uno: text-8;
+}
+
+.MDpost h3 {
+  --uno: text-7;
+}
+
+.MDpost h4 {
+  --uno: text-6;
+}
+
+.MDpost h5 {
+  --uno: text-5;
+}
+
+.MDpost p {
+  --uno: text-1rem;
+}
+
+.MDpost blockquote {
+  --uno: bg-bgColor1 dark:bg-bgColor1dark pl-4 py-2 my-6;
+  --uno: border-l-solid border-l-4 border-l-bgColorb dark:border-l-bgColorbdark;
+}
+
+
+.MDpost code:not(.astro-code code) {
+  --uno: bg-bgColor1 dark:bg-bgColor1dark pa-0.7 rounded-sm mx-1 font-mono text-sm;
+}
+
+.MDpost table {
+  --uno: mx-auto border-collapse my-5;
+}
+
+.MDpost hr {
+  --uno: border-t-none border-b-1 my-8;
+}
+
+.MDpost th,
+.MDpost td {
+  text-align: left;
+  --uno: text-textColor2 dark:text-textColor2dark text-1rem;
+  --uno: py-5px px-10px border border-solid border-bgColorb dark:border-bgColorbdark;
+}
+
+.MDpost th
+{
+  --uno: bg-bgColorh dark:bg-bgColorhdark;
+}
+
+.MDpost img {
+  display: block;
+  --uno: max-h-140 max-w-full my-5 mx-auto rounded-lg;
+}
+
+.MDpost pre {
+  --uno: w-full rounded-lg relative;
+}
+
+
+.MDpost .astro-code code {
+  --uno: text-14px rounded-lg leading-normal;
+  --uno: full pa-6 block overflow-x-auto;
+  font-family: "DejaVu Sans Mono", Monaco, Consolas, monospace;
+}
+
+.MDpost a {
+  --uno: no-underline text-textColor2 dark:text-textColor2dark;
+  background: linear-gradient(
+      var(--primary-50, rgba(90, 93, 240, 0.5)),
+      var(--primary-weak-50, rgba(105, 123, 226, 0.5))
+    )
+    bottom no-repeat;
+  background-size: 100% 0.4em;
+  transition: all 0.4s ease-in-out;
+}
+
+.MDpost a:hover {
+  background-size: 100% 60%;
+}
+
+.MDpost ul,
+.MDpost ol {
+  --uno: pl-8 ;
+}
+
+.MDpost ul {
+  --uno: list-disc;
+}
+
+.language-label {
+  --uno: absolute top-2 right-2 text-gray-500 text-sm font-sans p-1 rounded group-hover:opacity-0 transition-opacity duration-300;
+}
+
+.copy-button {
+  --uno: absolute top-4 right-4 w-10 h-10 rounded-md bg-[rgba(50,50,50,0.2)] text-textColor2dark hover:bg-[rgba(50,50,50,0.6)];
+  --uno:  transition-all duration-300 border-solid border-1 border-#2e2e32;
+  --uno: flex justify-center items-center;
+  --uno: opacity-0 group-hover:opacity-100 ;
+  cursor: pointer;
+}
+
+
+.copied {
+  background-color: rgba(50,50,50,0.6);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  opacity: 100%;
+}
+
+
+.copied::before {
+  display: flex;
+  background-color:rgba(50,50,50,0.6);
+  align-items: center;
+  justify-content: center;
+  content: 'Copied';
+  position: absolute;
+  right: 100%;
+  transform: translateX(0);
+  color: rgba(235, 235, 245, 0.6);
+  font-size: 12px;
+  padding: 0 8px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  height: 40px;
+  box-sizing: border-box;
+  border: solid 1px #2e2e32;
+}
+
+.copy-button.copied::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.icon-copy {
+  --uno: i-mdi-clipboard-outline w-5 h-5;
+  color: rgba(235, 235, 245, 0.6);
+}
+
+.copied .icon-copy {
+  --uno: i-mdi-clipboard-check-outline w-5 h-5;
+}
+
+.tococ ul {
+  --uno: pl-4 text-textColor2 dark:text-textColor2dark list-disc;
+  list-style-position: inside;
+}
+
+.tococ li {
+  --uno: my-1;
+}
+
+.tococ a {
+  --uno: no-underline text-textColor2 dark:text-textColor2dark hover:text-themeColor transition-all duration-300;
+}
+
+
+@keyframes fadeInX {
+  0% {
+      transform: translateX(-2rem);
+      opacity: 0;
+  }
+  100% {
+      transform: translateX(0);
+      opacity: 1;
+  }
+}
+
+
+@keyframes fadeInY {
+  0% {
+      transform: translateY(-2rem);
+      opacity: 0;
+  }
+  100% {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+@keyframes fadeInY1 {
+  0% {
+      transform: translateY(2rem);
+      opacity: 0;
+  }
+  100% {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+.onloadX {
+  opacity: 0;
+  animation: fadeInY1 500ms ease-in-out forwards;
+}
+
+@media (min-width: 1024px) {
+  .onloadX {
+    opacity: 0;
+    animation: fadeInX 500ms ease-in-out forwards;
+  }
+}
+
+.onloadY {
+  opacity: 0;
+  animation: fadeInY 500ms ease-in-out forwards;
+}
+
+
+.onload {
+  opacity: 0;
+  animation: fadeIn 500ms ease-in-out forwards;
+}

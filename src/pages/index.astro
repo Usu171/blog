@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostList from "@components/PostList.svelte";
+import { processPosts } from "src/utils.ts"
+
+const posts = await getCollection("blog");
+const processedPosts = processPosts(posts);
+---
+
+
+<BaseLayout>
+  <PostList posts={processedPosts} client:load />
+</BaseLayout>

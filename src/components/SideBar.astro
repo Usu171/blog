@@ -1,0 +1,59 @@
+---
+import config from "src/config.ts";
+---
+
+<div
+  class="sidebarl flex flex-col justify-center a-300 sticky mt-2.5rem lg:mt-0 top-24 max-h-90vh"
+>
+  <div
+    class="flex justify-center bg-bgColor dark:bg-bgColordark pa-10 rounded-tl-lg rounded-tr-lg lg:rounded-lg shadow-md a-300"
+  >
+    <div class="pa-4 flex flex-col flex-grow items-center max-w-sm">
+      <div class="flex flex-col items-center">
+        <img
+          src={config.USER_IMG}
+          alt={config.USERNAME}
+          fetchpriority="high"
+          class="rounded-full w-24 h-24 object-cover drop-shadow-md"
+        />
+        <h3 class="text-textColor dark:text-textColordark mb-0">
+          {config.USERNAME}
+        </h3>
+      </div>
+
+      <div class="h-0 my-8 w-full border-b border-b-dashed border-gray-300">
+      </div>
+      <div class="flex justify-between w-80%">
+        {
+          config.Links.map((link) => (
+            <a
+              href={link.url}
+              aria-labelledby={link.name}
+              title={link.name}
+              rel="nofollow"
+              target="_blank"
+              class="no-underline"
+            >
+              <span
+                class={`text-textColor dark:text-textColordark hover:text-themeColor hover-scale-110 active:scale-95 a-300 ${link.iconClass} inline-block text-6`}
+              />
+            </a>
+          ))
+        }
+      </div>
+      <div class="h-0 my-8 w-full border-b border-b-dashed border-gray-300">
+      </div>
+      <a
+        href={`mailto:` + config.USER_EMIAL}
+        class="no-underline w-18 flex justify-between gap-1 items-center hover:scale-105 active:scale-95 box-content
+    bg-themeColor rounded-full px-6 py-0 pa-3 transition-all duration-300 active:bg-themeColordark"
+      >
+        <p class="i-mdi-email text-gray-50"></p>
+        <span class="text-gray-50 font-bold text-sm tracking-widest"
+          >联系我</span
+        >
+      </a>
+    </div>
+  </div>
+  <slot />
+</div>

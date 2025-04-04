@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pixiv0_createDate</title>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js/dist/plotly.min.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      #plot {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="plot"></div>
+    <script>
+      function parseCSV(csv) {
+        const rows = csv.trim().split("\n");
+        const headers = rows[0].split(",");
+        const data = rows.slice(1).map((row) =>
+          row.split(",").reduce((acc, val, i) => {
+            acc[headers[i]] = parseFloat(val);
+            return acc;
+          }, {})
+        );
+        return data;
+      }
+
+      fetch("pixiv0_createDate.csv")
+        .then((response) => response.text())
+        .then((csvData) => {
+          const data = parseCSV(csvData);
+
+          const x = data.map((row) => row.year);
+          const totalFiles = data.map((row) => row.pngCount + row.jpgCount);
+          const pngRatio = data.map((row, index) => row.pngCount / totalFiles[index]);
+          const jpgRatio = data.map((row, index) => row.jpgCount / totalFiles[index]);
+
+          let traces = [
+            {
+              x: x,
+              y: data.map((row) => row.documentCount),
+              mode: "lines+markers",
+              line: { shape: "spline" },
+              name: "Document Count",
+              yaxis: "y1",
+            },
+            {
+              x: x,
+              y: data.map((row) => row.averageFileSize / 1024 / 1024),
+              mode: "lines+markers",
+              line: { shape: "spline" },
+              name: "Average File Size",
+              yaxis: "y2",
+            },
+            {
+              x: x,
+              y: data.map((row) => row.averageSideLength),
+              mode: "lines+markers",
+              line: { shape: "spline" },
+              name: "Average Square Side Length",
+              yaxis: "y3",
+            },
+          ];
+
+          traces.push({
+            x: x,
+            y: pngRatio,
+            type: "bar",
+            name: "PNG Ratio",
+            yaxis: "y4",
+          });
+      
+          traces.push({
+            x: x,
+            y: jpgRatio,
+            type: "bar",
+            name: "JPG Ratio",
+            yaxis: "y4",
+          });
+
+          let layout = {
+            title: "Pixiv Data Analysis",
+            grid: { rows: 4, columns: 1, pattern: "independent" },
+            barmode: 'stack',
+            xaxis: { title: "Year" },
+            yaxis: {
+              title: "Document Count",
+              domain: [0, 0.2],
+              showline: false,
+              zeroline: false,
+            },
+            yaxis2: {
+              title: "Average File Size",
+              domain: [0.5, 0.7],
+              showline: false,
+              zeroline: false,
+            },
+            yaxis3: {
+              title: "Average Square Side Length",
+              domain: [0.75, 1],
+              showline: false,
+              zeroline: false,
+            },
+            yaxis4: {
+              title: "File Type Ratio",
+              domain: [0.25, 0.45],
+              showline: false,
+              zeroline: false,
+            },
+            colorway: [
+              "#636efa",
+              "#ef553b",
+              "#00cc96",
+              "#ab63fa",
+              "#ffa15a",
+              "#19d3f3",
+              "#ff7aa0",
+              "#b6e880",
+              "#ff97ff",
+              "#fecb52",
+              "#9cdcfe",
+              "#4d98d6",
+              "#8bc34a",
+              "#c98870",
+              "#e8cca4",
+              "#fad8fd",
+              "#d6e3ff",
+              "#ffdad6",
+              "#58c9b9",
+              "#b1d18a",
+              "#a0d0cb",
+              "#a64aff",
+              "#2196f3",
+              "#ff983f",
+              "#a096a5",
+              "#94c2ff",
+              "#ffa3e7",
+              "#82f2ad",
+              "#87d1ea",
+              "#aaaeee",
+              "#ffb3b3",
+              "#cfbdfe",
+              "#6699ff",
+              "#f2ccb8",
+              "#c9ada7",
+              "#ab908b",
+              "#8e6d5b",
+              "#4caf50",
+              "#7fff00",
+              "#f2bac9",
+              "#7fb3d5",
+            ],
+          };
+
+          Plotly.newPlot("plot", traces, layout);
+          window.addEventListener("resize", function () {
+            Plotly.Plots.resize(document.getElementById("plot"));
+          });
+        })
+        .catch((error) => console.error("Error fetching the CSV file:", error));
+    </script>
+  </body>
+</html>

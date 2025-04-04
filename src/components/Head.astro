@@ -1,0 +1,70 @@
+---
+import config from "src/config.ts";
+import "@styles/global.css";
+
+const { title, description, image, isPost } = Astro.props;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href={config.favicon} />
+  <title>{title || config.SITE_TITLE}</title>
+  <meta name="title" content={title || config.SITE_TITLE} />
+  <meta name="description" content={description || config.SITE_TITLE} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={Astro.url} />
+  <meta property="og:title" content={title || config.SITE_TITLE} />
+  <meta property="og:description" content={description || config.SITE_TITLE} />
+  <meta
+    property="og:image"
+    content={image
+      ? new URL(image, Astro.url)
+      : new URL(config.USER_IMG, Astro.url)}
+  />
+
+  <meta property="article:author" content="Usu171" />
+
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:url" content={Astro.url} />
+  <meta property="twitter:title" content={title || config.SITE_TITLE} />
+  <meta property="twitter:description" content={description || config.SITE_TITLE} />
+  <meta
+    property="twitter:image"
+    content={image
+      ? new URL(image, Astro.url)
+      : new URL(config.USER_IMG, Astro.url)}
+  />
+  <script>
+    (function () {
+      const theme = localStorage.getItem("theme") || "dark";
+      document.documentElement.classList.toggle("dark", theme === "dark");
+    })();
+  </script>
+  <style>
+    body {
+      visibility: hidden;
+      opacity: 0;
+    }
+  </style>
+  {
+    isPost && (
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"
+      />
+    )
+  }
+
+  <link
+    rel="alternate"
+    type="application/rss+xml"
+    title={config.SITE_TITLE}
+    href={new URL("rss.xml", Astro.site)}
+  />
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script> -->
+
+</head>

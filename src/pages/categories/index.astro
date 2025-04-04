@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ButtonList from "@components/ButtonList.astro";
+const allPosts = await getCollection("blog");
+
+const uniqueCategories = [
+  ...new Set([...allPosts.map((post) => post.data.categories || "未分类")]),
+];
+
+const categoryCounts = uniqueCategories.map((item) => {
+  const count = allPosts.filter(
+    (post) => (post.data.categories || "未分类") === item
+  ).length;
+  return { item, count };
+});
+
+const title = "Categories";
+---
+
+<BaseLayout title={title}>
+  <ButtonList title={title} items={categoryCounts} url="categories" />
+</BaseLayout>

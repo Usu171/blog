@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H2</title>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js/dist/plotly.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #plot {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="plot"></div>
+    <script>
+
+        function parseCSV(csv) {
+            const rows = csv.trim().split('\n');
+            const headers = rows[0].split(',');
+            const data = rows.slice(1).map(row => row.split(',').reduce((acc, val, i) => {
+                acc[headers[i]] = parseFloat(val) || val;
+                return acc;
+            }, {}));
+            return data;
+        }
+
+        fetch('/data/CAS.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const data = parseCSV(csvData);
+                let traces = [];
+                let x = [];
+                for (let i = 0.05; i < 20.00; i += 0.05) {
+                    x.push(i);
+                }
+
+                let variables = Object.keys(data[0]);
+                variables.forEach(variable => {
+                    let y = data.map(row => row[variable]);
+                    traces.push({
+                        x: x,
+                        y: y,
+                        mode: 'lines',
+                        line: {shape: 'spline'},
+                        name: variable
+                    });
+                });
+
+                let layout = {
+                    title: 'H2',
+                    xaxis: {
+                        title: 'Distance (Å)',
+                        range: [0, 10],
+                        gridwidth: 0.5,
+                        showline: false,
+                        zeroline: false,
+                    },
+                    yaxis: {
+                        title: '',
+                        gridwidth: 0.5,
+                        showline: false,
+                        zeroline: false,
+                    },
+                    colorway : ['#636efa', '#ef553b', '#00cc96', '#ab63fa', '#ffa15a', '#19d3f3', '#ff7aa0', '#b6e880', '#ff97ff', '#fecb52'],
+                };
+
+                Plotly.newPlot('plot', traces, layout);
+                window.addEventListener('resize', function() {
+                    Plotly.Plots.resize(document.getElementById('plot'));
+                });
+                    })
+                    .catch(error => console.error('Error fetching the CSV file:', error));
+
+    </script>
+</body>
+</html>

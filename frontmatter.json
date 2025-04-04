@@ -1,0 +1,63 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "blog",
+      "path": "[[workspace]]/src/content/blog"
+    }
+  ],
+  
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "previewPath": "{{date|yyyy}}/{{date|MM}}/{{date|dd}}",
+      "filePrefix": null,
+      "clearEmpty": true,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "Banner",
+          "name": "banner",
+          "type": "image"
+        },
+        {
+          "title": "Publishing date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "list"
+        },
+        {
+          "title": "Category",
+          "name": "categories",
+          "type": "string"
+        },
+        {
+          "title": "Cover",
+          "name": "cover",
+          "type": "image",
+          "isPreviewImage": true
+        }
+      ]
+    }
+  ]
+}

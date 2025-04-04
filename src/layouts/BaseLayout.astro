@@ -1,0 +1,169 @@
+---
+import Head from "@components/Head.astro";
+import Header from "@components/Header.astro";
+import SideBar from "@components/SideBar.astro";
+import Footer from "@components/Footer.astro";
+
+const { title, description, image, isPost } = Astro.props;
+---
+
+<html lang="zh-Hans">
+  <Head title={title} description={description} image={image} isPost={isPost} />
+  <body class="min-h-screen">
+    <Header />
+    <main class="flex justify-center">
+      <div
+        class="flex flex-col-reverse lg:flex-row lg:justify-between max-w-7xl w-full min-h-3xl"
+      >
+        <div class="sidebardiv lg:w-25% shrink-0 onloadX">
+          <SideBar>
+            <slot name="sidebarb" />
+          </SideBar>
+        </div>
+        <div class="basediv mt-24 lg:w-[calc(75%-2.5rem)] onload">
+          <slot />
+          <Footer />
+        </div>
+      </div>
+    </main>
+    <script>
+      async function addCopyButton() {
+        await sleep(100);
+        const codeBlocks = document.querySelectorAll(".MDpost .astro-code");
+
+        codeBlocks.forEach((codeBlock) => {
+          codeBlock.classList.add("group");
+          const button = document.createElement("button");
+          button.className = "copy-button";
+          const icon = document.createElement("p");
+          icon.className = "icon-copy";
+          button.appendChild(icon);
+
+          button.addEventListener("click", () => {
+            const codeElement = codeBlock.querySelector("code");
+
+            if (codeElement) {
+              const codeText = codeElement.textContent;
+              if (codeText !== null) {
+                navigator.clipboard
+                  .writeText(codeText)
+                  .then(() => {
+                    button.classList.add("copied");
+                    const languageLabel = codeBlock.querySelector(
+                      ".language-label"
+                    ) as HTMLElement;
+                    if (languageLabel) {
+                      languageLabel.style.opacity = "0";
+                    }
+                    setTimeout(() => {
+                      button.classList.remove("copied");
+                      if (languageLabel) {
+                        languageLabel.style.removeProperty("opacity");
+                      }
+                    }, 3000);
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                  });
+              }
+            }
+          });
+
+          const language = codeBlock.getAttribute("data-language");
+          if (language) {
+            const languageLabel = document.createElement("div");
+            languageLabel.innerText = language;
+            languageLabel.className = "language-label";
+
+            codeBlock.appendChild(languageLabel);
+          }
+
+          codeBlock.appendChild(button);
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      function showTheme() {
+        (function () {
+          const theme = localStorage.getItem("theme") || "dark";
+          document.documentElement.classList.toggle("dark", theme === "dark");
+        })();
+      }
+
+      function showContent() {
+        document.body.style.visibility = "visible";
+        document.body.style.opacity = "1";
+      }
+
+      function sleep(ms: number) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      function calculateDaysSince(date: string): number {
+        const currentDate = new Date();
+        const targetDate = new Date(date);
+        const timeDifference = currentDate.getTime() - targetDate.getTime();
+        const daysDifference = Math.floor(
+          timeDifference / (1000 * 60 * 60 * 24)
+        );
+        return daysDifference;
+      }
+
+      async function addTransitionToElements() {
+        await sleep(100);
+
+        document.body.classList.add("transition-all", "duration-300");
+
+        const elements300 = document.querySelectorAll(".a-300");
+        elements300.forEach((element) => {
+          element.classList.add("transition-all", "duration-300");
+        });
+
+        const mdBlockquotes = document.querySelectorAll(".MDpost blockquote");
+        mdBlockquotes.forEach((element) => {
+          element.classList.add("transition-all", "duration-300");
+        });
+
+        const mdCodes = document.querySelectorAll(".MDpost code");
+        mdCodes.forEach((element) => {
+          element.classList.add("transition-all", "duration-300");
+        });
+
+        const elements500 = document.querySelectorAll("a-500");
+        elements500.forEach((element) => {
+          element.classList.add("transition-all", "duration-500");
+        });
+      }
+
+      function showFooter() {
+        const daysRunning = calculateDaysSince("2023-05-07");
+        const duration = document.getElementById("blog-duration");
+        if (duration) {
+          duration.innerText = `${daysRunning}`;
+        }
+        const currentYear = new Date().getFullYear();
+        const footerYear = document.getElementById("blog-year");
+        if (footerYear) {
+          footerYear.innerText = `© 2023 - ${currentYear}`;
+        }
+      }
+
+      async function addClass() {
+        observer.disconnect();
+        // showTheme();
+        showContent();
+        showFooter();
+        await addTransitionToElements();
+        await addCopyButton();
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+
+      const observer = new MutationObserver(addClass);
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // window.addEventListener("DOMContentLoaded", async function () {
+      addClass();
+      // });
+    </script>
+  </body>
+</html>

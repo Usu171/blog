@@ -1,0 +1,101 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import { generatePath, generateTOC, getMinCoverPath } from "src/utils.ts";
+import MDPostLayout from "@layouts/MDPostLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post: { data: { date: Date }; id: string }) => {
+    const date = post.data.date;
+    return {
+      params: {
+        id: generatePath(date, post.id),
+      },
+    };
+  });
+}
+
+const { id } = Astro.params;
+const oriId = id.split("/").pop();
+const post: any = await getEntry("blog", oriId);
+const { Content, headings } = await render(post);
+let cover = "";
+if (post.data.cover) {
+  cover = getMinCoverPath(post.data.cover);
+}
+
+const toc = generateTOC(headings);
+---
+
+<MDPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={cover}
+  isPost={true}
+  >{
+    toc && (
+      <Fragment slot="sidebarb">
+        <div id="toc"
+          class="tococ hidden lg:block bg-bgColor dark:bg-bgColordark
+                my-2.5rem pa-10 rounded-lg shadow-md a-300 overflow-y-auto overflow-x-auto"
+          set:html={toc}
+        />
+      </Fragment>
+    )
+  }
+  {
+    post.data.banner && (
+      <img
+        src={post.data.banner}
+        alt={post.data.title}
+        class="w-100% h-100 object-cover rounded-lg mb-4"
+      />
+    )
+  }
+  <div data-pagefind-body class="bg-bgColor dark:bg-bgColordark rounded-lg shadow-md a-300 pa-10">
+    <div class="inline-flex items-center">
+      <a
+        href={`/categories/${post.data.categories || "未分类"}`}
+        class="inline-flex items-center h-7 px-4 py-0.5 ml-2 text-sm font-bold text-textColor2 dark:text-textColor2dark
+          rounded-full hover:bg-bgColorh dark:hover:bg-bgColorhdark no-underline a-300"
+      >
+        {post.data.categories || "未分类"}
+      </a>
+      <p
+        class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
+      >
+        {post.data.date.toLocaleDateString()}
+      </p>
+    </div>
+    <h1
+      class="text-5xl font-bold leading-snug text-textColor dark:text-textColordark my-3"
+    >
+      {post.data.title}
+    </h1>
+    <span class="flex">
+      {
+        post.data.tags &&
+          post.data.tags.map((tag) => (
+            <a
+              href={`/tags/${tag}`}
+              class="flex items-center h-7 px-2 mx-1 text-xs font-bold text-textColor2 dark:text-textColor2dark no-underline
+                bg-bgColorh dark:bg-bgColorhdark rounded-full hover:bg-bgColorb dark:hover:bg-bgColorbdark  a-300"
+            >
+              <p class="i-mdi-tag mr-1" />
+              {tag}
+            </a>
+          ))
+      }
+    </span>
+    {
+      post.data.description && (
+        <p class="text-bgColorbdark dark:text-bgColorb">
+          {post.data.description}
+        </p>
+      )
+    }
+    <article class="MDpost">
+      <Content />
+    </article>
+  </div>
+</MDPostLayout>

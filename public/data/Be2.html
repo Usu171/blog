@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be2</title>
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js/dist/plotly.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #plot {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="plot"></div>
+    <script>
+
+        const hiddenVariables = []
+
+        function parseCSV(csv) {
+            const rows = csv.trim().split('\n');
+            const headers = rows[0].split(',');
+            const data = rows.slice(1).map(row => row.split(',').reduce((acc, val, i) => {
+                acc[headers[i]] = parseFloat(val) || val;
+                return acc;
+            }, {}));
+            return data;
+        }
+
+        fetch('Be2.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const data = parseCSV(csvData);
+                let traces = [];
+                let x = [];
+                for (let i = 0.40; i < 8.05; i += 0.05) {
+                    x.push(i);
+                }
+
+                let variables = Object.keys(data[0]);
+                variables.forEach(variable => {
+                    let y = data.map(row => row[variable]);
+                    traces.push({
+                        x: x,
+                        y: y,
+                        mode: 'lines',
+                        line: {shape: 'spline'},
+                        connectgaps: true,
+                        name: variable,
+                        visible: hiddenVariables.includes(variable) ? 'legendonly' : true
+                    });
+                });
+
+                let layout = {
+                    title: 'Be2',
+                    xaxis: {
+                        title: 'Distance (Å)',
+                        range: [1.0, 5],
+                        gridwidth: 0.5,
+                        showline: false,
+                        zeroline: false,
+                    },
+                    yaxis: {
+                        title: 'Energy (Hartree)',
+                        range: [-29.27, -29.12],
+                        gridwidth: 0.5,
+                        showline: false,
+                        zeroline: false,
+                    },
+                    colorway : ['#636efa', '#ef553b', '#00cc96', '#ab63fa', '#ffa15a', '#19d3f3', '#ff7aa0', '#b6e880', '#ff97ff', '#fecb52', '#9cdcfe', '#4d98d6', '#8bc34a', '#c98870', '#e8cca4', '#fad8fd', '#d6e3ff', '#ffdad6', '#58c9b9', '#b1d18a', '#a0d0cb', '#a64aff', '#2196f3', '#ff983f', '#a096a5', '#94c2ff', '#ffa3e7', '#82f2ad', '#87d1ea', '#aaaeee', '#ffb3b3', '#cfbdfe', '#6699ff', '#f2ccb8', '#c9ada7', '#ab908b', '#8e6d5b', '#4caf50', '#7fff00', '#f2bac9', '#7fb3d5'],
+                };
+
+                Plotly.newPlot('plot', traces, layout);
+                window.addEventListener('resize', function() {
+                    Plotly.Plots.resize(document.getElementById('plot'));
+                });
+                    })
+                    .catch(error => console.error('Error fetching the CSV file:', error));
+
+    </script>
+</body>
+</html>
