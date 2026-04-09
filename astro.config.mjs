@@ -17,7 +17,7 @@ export default defineConfig({
     svelte(),
     sitemap(),
     swup({
-      containers: ["main"],
+      containers: ["main"],updateHead: { persistAssets: true }
     }),
   ],
   build: {
