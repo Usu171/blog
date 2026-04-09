@@ -9,7 +9,7 @@
 
   let currentPage = $state(0);
 
-  const totalPages = Math.ceil(posts.length / itemsPerPage);
+  const totalPages = $derived(Math.ceil(posts.length / itemsPerPage));
 
   function addClassNames() {
     setTimeout(() => {

@@ -35,7 +35,7 @@ function toggleSearchbar() {
   onclick={toggleSearchbar}
   aria-label="Toggle Search Bar"
   title="Toggle Search Bar"
-  class="text-2xl line-height-20 ml-5 cursor-pointer i-mdi-search text-textColor dark:text-textColordark
+  class="text-2xl leading-20 ml-5 cursor-pointer i-mdi-search text-textColor dark:text-textColordark
   hover:text-themeColor"
 ></button>
 
@@ -43,7 +43,7 @@ function toggleSearchbar() {
   onclick={toggleSidebar}
   aria-label="Toggle SideBar"
   title="Toggle SideBar"
-  class="text-2xl line-height-20 ml-5 cursor-pointer i-uil-arrows-h text-textColor dark:text-textColordark
+  class="text-2xl leading-20 ml-5 cursor-pointer i-uil-arrows-h text-textColor dark:text-textColordark
   hidden lg:inline-block hover:text-themeColor"
 ></button>
 
@@ -51,6 +51,6 @@ function toggleSearchbar() {
   onclick={toggleTheme}
   aria-label="Toggle Dark Mode"
   title="Toggle Dark Mode"
-  class="text-2xl line-height-20 ml-5 cursor-pointer i-mdi-weather-night dark:i-mdi-weather-sunny text-textColor dark:text-textColordark
+  class="text-2xl leading-20 ml-5 cursor-pointer i-mdi-weather-night dark:i-mdi-weather-sunny text-textColor dark:text-textColordark
   hover:text-themeColor"
 ></button>
