@@ -1,44 +1,24 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PostList from "@components/PostList.astro";
-import { POSTS_PER_PAGE, processPosts } from "@/utils.ts";
+import GroupedPostListPage from "@components/GroupedPostListPage.astro";
+import { categoryGroupConfig, getGroupedPaginatedStaticPaths } from "@/grouped-posts.ts";
 
 export async function getStaticPaths({ paginate }) {
-  const allPosts = await getCollection("blog");
-  const uniqueCategories = [
-    ...new Set([...allPosts.map((post) => post.data.categories || "未分类")]),
-  ];
-
-  const paginatedPaths = await Promise.all(
-    uniqueCategories.map(async (category) => {
-      const processedPosts = await processPosts(
-        allPosts.filter((post) => (post.data.categories || "未分类") === category)
-      );
-
-      return paginate(processedPosts, {
-        pageSize: POSTS_PER_PAGE,
-        params: { category },
-        props: {
-          category,
-          totalCount: processedPosts.length,
-        },
-      });
-    })
+  return getGroupedPaginatedStaticPaths(
+    await getCollection("blog"),
+    categoryGroupConfig,
+    paginate
   );
-
-  return paginatedPaths.flat();
 }
 
-const { page, category, totalCount } = Astro.props;
+const { page, groupValue, totalCount, pageBasePath } = Astro.props;
 ---
 
-<BaseLayout title={category}>
-  <h1 class="text-textColor dark:text-textColordark ml-4">{category} ({totalCount})</h1>
-  <PostList
-    posts={page.data}
-    currentPage={page.currentPage}
-    lastPage={page.lastPage}
-    pageBasePath={`/categories/${category}`}
-  />
-</BaseLayout>
+<GroupedPostListPage
+  groupValue={groupValue}
+  totalCount={totalCount}
+  pageBasePath={pageBasePath}
+  posts={page.data}
+  currentPage={page.currentPage}
+  lastPage={page.lastPage}
+/>

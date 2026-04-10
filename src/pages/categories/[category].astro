@@ -1,40 +1,13 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PostList from "@components/PostList.astro";
-import { POSTS_PER_PAGE, processPosts } from "@/utils.ts";
+import GroupedPostListPage from "@components/GroupedPostListPage.astro";
+import { categoryGroupConfig, getGroupedFirstPageProps, getGroupedStaticPaths } from "@/grouped-posts.ts";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection("blog");
-
-  const uniqueCategories = [
-    ...new Set([...allPosts.map((post) => post.data.categories || "未分类")]),
-  ];
-
-  return uniqueCategories.map((category) => {
-    const filteredPosts = allPosts.filter(
-      (post) => (post.data.categories || "未分类") === category
-    );
-
-    return {
-      params: { category: category },
-      props: { posts: filteredPosts },
-    };
-  });
+  return getGroupedStaticPaths(await getCollection("blog"), categoryGroupConfig);
 }
 
-const { category } = Astro.params;
-const { posts } = Astro.props;
-const processedPosts = await processPosts(posts);
-const lastPage = Math.ceil(processedPosts.length / POSTS_PER_PAGE);
+const pageProps = await getGroupedFirstPageProps(Astro.props);
 ---
 
-<BaseLayout title={category}>
-  <h1 class="text-textColor dark:text-textColordark ml-4">{category} ({posts.length})</h1>
-  <PostList
-    posts={processedPosts.slice(0, POSTS_PER_PAGE)}
-    currentPage={1}
-    lastPage={lastPage}
-    pageBasePath={`/categories/${category}`}
-  />
-</BaseLayout>
+<GroupedPostListPage {...pageProps} />

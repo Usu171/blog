@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostList from "@components/PostList.astro";
+import type { ProcessedPost } from "@/utils.ts";
+
+interface Props {
+  groupValue: string;
+  totalCount: number;
+  pageBasePath: string;
+  posts: ProcessedPost[];
+  currentPage: number;
+  lastPage: number;
+}
+
+const { groupValue, totalCount, pageBasePath, posts, currentPage, lastPage }: Props = Astro.props;
+---
+
+<BaseLayout title={groupValue}>
+  <h1 class="text-textColor dark:text-textColordark ml-4">{groupValue} ({totalCount})</h1>
+  <PostList
+    posts={posts}
+    currentPage={currentPage}
+    lastPage={lastPage}
+    pageBasePath={pageBasePath}
+  />
+</BaseLayout>

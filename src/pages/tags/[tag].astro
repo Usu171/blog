@@ -1,39 +1,13 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
-import PostList from "@components/PostList.astro";
-import { POSTS_PER_PAGE, processPosts } from "@/utils.ts";
+import GroupedPostListPage from "@components/GroupedPostListPage.astro";
+import { getGroupedFirstPageProps, getGroupedStaticPaths, tagGroupConfig } from "@/grouped-posts.ts";
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection("blog");
-
-  const uniqueTags = [...new Set(allPosts
-  .map((post) => post.data.tags || [])
-  .flat()
-)];
-
-  return uniqueTags.map((tag) => {
-    const filteredPosts = allPosts.filter((post) => post.data.tags && post.data.tags.includes(tag));
-
-    return {
-      params: { tag },
-      props: { posts: filteredPosts },
-    };
-  });
+  return getGroupedStaticPaths(await getCollection("blog"), tagGroupConfig);
 }
 
-const { tag } = Astro.params;
-const { posts } = Astro.props;
-const processedPosts = await processPosts(posts);
-const lastPage = Math.ceil(processedPosts.length / POSTS_PER_PAGE);
+const pageProps = await getGroupedFirstPageProps(Astro.props);
 ---
 
-<BaseLayout title={tag}>
-  <h1 class="text-textColor dark:text-textColordark ml-4">{tag} ({posts.length})</h1>
-  <PostList
-    posts={processedPosts.slice(0, POSTS_PER_PAGE)}
-    currentPage={1}
-    lastPage={lastPage}
-    pageBasePath={`/tags/${tag}`}
-  />
-</BaseLayout>
+<GroupedPostListPage {...pageProps} />
