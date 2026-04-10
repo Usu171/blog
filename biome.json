@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -9,7 +9,51 @@
   "linter": {
     "enabled": true
   },
-  "organizeImports": {
-    "enabled": true
-  }
+  "files": {
+    "ignoreUnknown": false,
+    "includes": [
+      "src/**/*",
+      "!src/content/**/*"
+    ]
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "html": {
+    "formatter": {
+      "enabled": true,
+      "indentScriptAndStyle": true
+    },
+    "experimentalFullSupportEnabled": true
+  },
+  "css": {
+    "parser": {
+      "cssModules": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          },
+          "suspicious": {
+            "noDuplicateProperties": "off"
+          }
+        }
+      }
+    }
+  ]
 }
