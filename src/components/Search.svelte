@@ -94,6 +94,7 @@
         >
         {#if keyword}
           <button
+            type="button"
             aria-label="Clear Input"
             class="text-3xl ml-3 i-mdi-close text-textColor2 dark:text-textColor2dark mr-3 cursor-pointer"
             onclick={() => keyword = ""}

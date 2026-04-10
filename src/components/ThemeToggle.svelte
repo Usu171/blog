@@ -31,6 +31,7 @@
 </script>
 
 <button
+  type="button"
   onclick={toggleSearchbar}
   aria-label="Toggle Search Bar"
   title="Toggle Search Bar"
@@ -39,6 +40,7 @@
 ></button>
 
 <button
+  type="button"
   onclick={toggleSidebar}
   aria-label="Toggle SideBar"
   title="Toggle SideBar"
@@ -47,6 +49,7 @@
 ></button>
 
 <button
+  type="button"
   onclick={toggleTheme}
   aria-label="Toggle Dark Mode"
   title="Toggle Dark Mode"
