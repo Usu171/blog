@@ -68,10 +68,15 @@ const currentPageClass =
               >
                 {post.wordCount} 字
               </p>
+              <p
+                class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
+              >
+                {post.minutesRead} 分钟
+              </p>
             </div>
             {post.tags?.length > 0 && (
               <span class="flex">
-                {post.tags.slice(0, 3).map((tag) => (
+                {post.tags.slice(0, 3).map((tag: string) => (
                   <a
                     href={`/tags/${tag}`}
                     class="flex items-center h-7 px-2 mx-1 text-xs font-bold text-textColor2 dark:text-textColor2dark no-underline bg-bgColorh dark:bg-bgColorhdark rounded-full hover:bg-bgColorb dark:hover:bg-bgColorbdark a-300"

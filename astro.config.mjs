@@ -1,5 +1,5 @@
 // @ts-check
-import { remarkReadingTime } from './src/plugins/remark-reading-time.mjs';
+import { remarkReadingTime } from './src/plugins/remark-reading-time.js';
 import { defineConfig } from "astro/config";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";

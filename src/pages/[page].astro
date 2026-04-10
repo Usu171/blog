@@ -5,7 +5,7 @@ import PostList from "@components/PostList.astro";
 import { POSTS_PER_PAGE, processPosts } from "@/utils.ts";
 
 export async function getStaticPaths({ paginate }) {
-  const processedPosts = processPosts(await getCollection("blog"));
+  const processedPosts = await processPosts(await getCollection("blog"));
 
   return paginate(processedPosts, {
     pageSize: POSTS_PER_PAGE,

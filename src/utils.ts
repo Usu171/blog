@@ -1,3 +1,4 @@
+import { render } from "astro:content";
 import config from "./config.ts";
 
 export function generatePath(date: Date, id: string): string {
@@ -87,24 +88,19 @@ export interface ProcessedPost {
   cover: string;
   description: string;
   wordCount: number;
+  minutesRead: number;
 }
 
 export const POSTS_PER_PAGE = 10;
 
-function countWords(text: string): number {
-  const cleanedText = text
-    .replace(/[@#%^&*-_+=/\\|,，.。!！?？:：、;；“”'"$$()<>《》{}\[\]【】]/g, "")
-    .replace(/[\r\n]/g, "")
-    .replace(/\s+/g, "")
-    .trim();
-
-  return cleanedText.length;
+export function getReadingMinutes(minutesRead?: number | null): number {
+  return Math.max(1, Math.ceil(minutesRead ?? 0));
 }
 
-export function processPosts(posts: any[]): ProcessedPost[] {
-  return posts
-    .map((post) => {
-      const bodyWordCount = countWords(post.body || "");
+export async function processPosts(posts: any[]): Promise<ProcessedPost[]> {
+  const processedPosts = await Promise.all(
+    posts.map(async (post) => {
+      const { remarkPluginFrontmatter } = await render(post);
 
       return {
         id: post.id,
@@ -118,8 +114,13 @@ export function processPosts(posts: any[]): ProcessedPost[] {
           : post.body
           ? post.body.slice(0, 100) + "..."
           : "",
-        wordCount: bodyWordCount,
+        wordCount: remarkPluginFrontmatter.words || 0,
+        minutesRead: getReadingMinutes(remarkPluginFrontmatter.minutesRead),
       };
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  );
+
+  return processedPosts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 }

@@ -12,6 +12,8 @@ const blog = defineCollection({
     tags: z.union([z.array(z.string()), z.null()]).optional(),
     categories: z.union([z.string(), z.null()]).optional(),
     cover: z.union([z.string(), z.null()]).optional(),
+    minutesRead: z.number().optional(),
+    words: z.number().optional(),
   }),
 });
 

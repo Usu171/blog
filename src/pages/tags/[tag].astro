@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
-const processedPosts = processPosts(posts);
+const processedPosts = await processPosts(posts);
 const lastPage = Math.ceil(processedPosts.length / POSTS_PER_PAGE);
 ---
 

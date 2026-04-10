@@ -1,6 +1,6 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
-import { formatDate, generatePath, generateTOC, getMinCoverPath } from "@/utils.ts";
+import { formatDate, generatePath, generateTOC, getMinCoverPath, getReadingMinutes } from "@/utils.ts";
 import MDPostLayout from "@layouts/MDPostLayout.astro";
 
 export async function getStaticPaths() {
@@ -18,13 +18,15 @@ export async function getStaticPaths() {
 const { id } = Astro.params;
 const oriId = id.split("/").pop();
 const post: any = await getEntry("blog", oriId);
-const { Content, headings } = await render(post);
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
 let cover = "";
 if (post.data.cover) {
   cover = getMinCoverPath(post.data.cover);
 }
 
 const toc = generateTOC(headings);
+const readingMinutes = getReadingMinutes(remarkPluginFrontmatter.minutesRead);
+const wordCount = remarkPluginFrontmatter.words || 0;
 ---
 
 <MDPostLayout
@@ -65,6 +67,16 @@ const toc = generateTOC(headings);
         class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
       >
         {formatDate(post.data.date)}
+      </p>
+      <p
+        class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
+      >
+        {wordCount} 字
+      </p>
+      <p
+        class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
+      >
+        {readingMinutes} 分钟
       </p>
     </div>
     <h1

@@ -10,20 +10,24 @@ export async function getStaticPaths({ paginate }) {
     ...new Set([...allPosts.map((post) => post.data.categories || "未分类")]),
   ];
 
-  return uniqueCategories.flatMap((category) => {
-    const processedPosts = processPosts(
-      allPosts.filter((post) => (post.data.categories || "未分类") === category)
-    );
+  const paginatedPaths = await Promise.all(
+    uniqueCategories.map(async (category) => {
+      const processedPosts = await processPosts(
+        allPosts.filter((post) => (post.data.categories || "未分类") === category)
+      );
 
-    return paginate(processedPosts, {
-      pageSize: POSTS_PER_PAGE,
-      params: { category },
-      props: {
-        category,
-        totalCount: processedPosts.length,
-      },
-    });
-  });
+      return paginate(processedPosts, {
+        pageSize: POSTS_PER_PAGE,
+        params: { category },
+        props: {
+          category,
+          totalCount: processedPosts.length,
+        },
+      });
+    })
+  );
+
+  return paginatedPaths.flat();
 }
 
 const { page, category, totalCount } = Astro.props;
