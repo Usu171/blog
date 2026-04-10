@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "biome format --write .",
+    "lint": "biome lint --write .",
+    "check": "biome check --write ."
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
@@ -31,6 +34,8 @@
     "@iconify-json/uil": "^1.2.3",
     "@unocss/astro": "^66.6.8",
     "@unocss/preset-icons": "^66.6.8",
+    "@unocss/preset-wind3": "^66.6.8",
+    "@unocss/preset-wind4": "^66.6.8",
     "@unocss/transformer-directives": "^66.6.8",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",

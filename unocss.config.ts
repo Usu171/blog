@@ -1,22 +1,28 @@
-import { presetIcons, transformerDirectives, presetWebFonts, presetUno, defineConfig } from "unocss";
+import presetWind3 from "@unocss/preset-wind3";
+import {
+  defineConfig,
+  presetIcons,
+  presetUno,
+  presetWebFonts,
+  transformerDirectives,
+} from "unocss";
 
 export default defineConfig({
   safelist: ["transition-colors", "duration-300", "duration-500"],
   transformers: [transformerDirectives()],
-  presets: [presetUno(), presetWebFonts(
-    {
+  presets: [
+    presetWind3(),
+    presetWebFonts({
       provider: "fontsource",
       fonts: {
         noto: {
           name: "Noto Sans",
           weights: [400, 700, 900],
-        }
-      }
-    }
-  ),
-presetIcons(
-
-)],
+        },
+      },
+    }),
+    presetIcons(),
+  ],
   theme: {
     colors: {
       themeColor: "#5a5df0",
@@ -42,6 +48,6 @@ presetIcons(
       md: "768px",
       lg: "1024px",
       xl: "1300px",
-    }
+    },
   },
 });
