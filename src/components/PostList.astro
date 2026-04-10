@@ -1,0 +1,167 @@
+---
+import { generatePath, getMinCoverPath } from "src/utils.ts";
+import type { ProcessedPost } from "src/utils.ts";
+
+interface Props {
+  posts: ProcessedPost[];
+  currentPage?: number;
+  lastPage?: number;
+  pageBasePath?: string;
+}
+
+const { posts, currentPage, lastPage, pageBasePath = "/" }: Props = Astro.props;
+
+const hasPagination =
+  typeof currentPage === "number" &&
+  typeof lastPage === "number" &&
+  lastPage > 1;
+
+const pageNumbers = hasPagination
+  ? Array.from({ length: lastPage }, (_, index) => index + 1)
+  : [];
+
+function getPageHref(pageNumber: number): string {
+  if (pageNumber === 1) {
+    return pageBasePath;
+  }
+
+  return pageBasePath === "/"
+    ? `/${pageNumber}`
+    : `${pageBasePath}/${pageNumber}`;
+}
+
+const navButtonClass =
+  "flex items-center justify-center w-10 h-10 rounded-md bg-bgColor2 dark:bg-bgColor2dark text-textColor dark:text-textColordark hover:bg-bgColorh dark:hover:bg-bgColorhdark a-300 no-underline";
+const disabledNavButtonClass = `${navButtonClass} opacity-60`;
+const pageButtonClass =
+  "flex items-center justify-center w-10 h-10 rounded-md bg-bgColor2 dark:bg-bgColor2dark text-textColor dark:text-textColordark hover:bg-bgColorh dark:hover:bg-bgColorhdark a-300 no-underline";
+const currentPageClass =
+  "border-1 border-solid border-bgColorb dark:border-bgColorbdark cursor-default";
+---
+
+<ul class="list-none flex flex-col gap-4 pa-0 ma-0">
+  {posts.map((post) => (
+    <li
+      class="bg-bgColor dark:bg-bgColordark rounded-lg a-300 sm:h-56 overflow-hidden shadow active:scale-98 onload"
+    >
+      <div
+        class="flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between a-300 group h-full"
+      >
+        <div class="pa-5 flex flex-col w-full h-full">
+          <div class="flex flex-wrap gap-2 items-center justify-between">
+            <div class="flex items-center">
+              {post.categories && (
+                <a
+                  href={`/categories/${post.categories}`}
+                  class="inline-flex items-center h-7 px-4 py-0.5 ml-2 text-sm font-bold text-bgColorbdark dark:text-bgColorb no-underline rounded-full hover:bg-bgColorh dark:hover:bg-bgColorhdark a-300"
+                >
+                  {post.categories}
+                </a>
+              )}
+              <p
+                class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
+              >
+                {post.date.toLocaleDateString()}
+              </p>
+              <p
+                class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
+              >
+                {post.wordCount} 字
+              </p>
+            </div>
+            {post.tags?.length > 0 && (
+              <span class="flex">
+                {post.tags.slice(0, 3).map((tag) => (
+                  <a
+                    href={`/tags/${tag}`}
+                    class="flex items-center h-7 px-2 mx-1 text-xs font-bold text-textColor2 dark:text-textColor2dark no-underline bg-bgColorh dark:bg-bgColorhdark rounded-full hover:bg-bgColorb dark:hover:bg-bgColorbdark a-300"
+                  >
+                    <p class="i-mdi-tag mr-1" />
+                    {tag}
+                  </a>
+                ))}
+              </span>
+            )}
+          </div>
+          <a href={generatePath(post.date, post.id)} class="no-underline flex-grow">
+            <h1
+              class="text-textColor dark:text-textColordark group-hover:text-themeColor a-300 text-xl font-bold"
+            >
+              {post.title}
+            </h1>
+
+            <p class="text-sm text-textColor2 dark:text-textColor2dark break-all">
+              {post.description}
+            </p>
+          </a>
+        </div>
+        {post.cover && (
+          <a
+            href={generatePath(post.date, post.id)}
+            class="mb-2 shrink-0 w-full sm:w-90 h-56 overflow-hidden no-underline"
+          >
+            <img
+              src={getMinCoverPath(post.cover)}
+              fetchpriority="high"
+              alt={post.title}
+              class="w-full sm:w-90 h-56 object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </a>
+        )}
+      </div>
+    </li>
+  ))}
+</ul>
+
+{
+  hasPagination && (
+    <div class="flex justify-center my-5 gap-2">
+      {
+        currentPage === 1 ? (
+          <span class={disabledNavButtonClass} aria-disabled="true">
+            <p class="i-mdi-chevron-left text-xl ma-0" />
+          </span>
+        ) : (
+          <a
+            href={getPageHref(currentPage - 1)}
+            class={navButtonClass}
+            aria-label="Previous page"
+          >
+            <p class="i-mdi-chevron-left text-xl ma-0" />
+          </a>
+        )
+      }
+
+      {pageNumbers.map((pageNumber) =>
+        pageNumber === currentPage ? (
+          <span
+            class={`${pageButtonClass} ${currentPageClass}`}
+            aria-current="page"
+          >
+            {pageNumber}
+          </span>
+        ) : (
+          <a href={getPageHref(pageNumber)} class={pageButtonClass}>
+            {pageNumber}
+          </a>
+        )
+      )}
+
+      {
+        currentPage === lastPage ? (
+          <span class={disabledNavButtonClass} aria-disabled="true">
+            <p class="i-mdi-chevron-right text-xl ma-0" />
+          </span>
+        ) : (
+          <a
+            href={getPageHref(currentPage + 1)}
+            class={navButtonClass}
+            aria-label="Next page"
+          >
+            <p class="i-mdi-chevron-right text-xl ma-0" />
+          </a>
+        )
+      }
+    </div>
+  )
+}

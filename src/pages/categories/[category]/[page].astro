@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostList from "@components/PostList.astro";
+import { POSTS_PER_PAGE, processPosts } from "src/utils.ts";
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection("blog");
+  const uniqueCategories = [
+    ...new Set([...allPosts.map((post) => post.data.categories || "未分类")]),
+  ];
+
+  return uniqueCategories.flatMap((category) => {
+    const processedPosts = processPosts(
+      allPosts.filter((post) => (post.data.categories || "未分类") === category)
+    );
+
+    return paginate(processedPosts, {
+      pageSize: POSTS_PER_PAGE,
+      params: { category },
+      props: {
+        category,
+        totalCount: processedPosts.length,
+      },
+    });
+  });
+}
+
+const { page, category, totalCount } = Astro.props;
+---
+
+<BaseLayout title={category}>
+  <h1 class="text-textColor dark:text-textColordark ml-4">{category} ({totalCount})</h1>
+  <PostList
+    posts={page.data}
+    currentPage={page.currentPage}
+    lastPage={page.lastPage}
+    pageBasePath={`/categories/${category}`}
+  />
+</BaseLayout>

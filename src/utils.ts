@@ -65,6 +65,8 @@ export interface ProcessedPost {
   wordCount: number;
 }
 
+export const POSTS_PER_PAGE = 10;
+
 function countWords(text: string): number {
   const cleanedText = text
     .replace(/[@#%^&*-_+=/\\|,，.。!！?？:：、;；“”'"$$()<>《》{}\[\]【】]/g, "")

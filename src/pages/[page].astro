@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PostList from "@components/PostList.astro";
+import { POSTS_PER_PAGE, processPosts } from "src/utils.ts";
+
+export async function getStaticPaths({ paginate }) {
+  const processedPosts = processPosts(await getCollection("blog"));
+
+  return paginate(processedPosts, {
+    pageSize: POSTS_PER_PAGE,
+  });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout>
+  <PostList
+    posts={page.data}
+    currentPage={page.currentPage}
+    lastPage={page.lastPage}
+  />
+</BaseLayout>

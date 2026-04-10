@@ -1,14 +1,18 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import PostList from "@components/PostList.svelte";
-import { processPosts } from "src/utils.ts"
+import PostList from "@components/PostList.astro";
+import { POSTS_PER_PAGE, processPosts } from "src/utils.ts";
 
-const posts = await getCollection("blog");
-const processedPosts = processPosts(posts);
+const processedPosts = processPosts(await getCollection("blog"));
+const lastPage = Math.ceil(processedPosts.length / POSTS_PER_PAGE);
 ---
 
 
 <BaseLayout>
-  <PostList posts={processedPosts} client:load />
+  <PostList
+    posts={processedPosts.slice(0, POSTS_PER_PAGE)}
+    currentPage={1}
+    lastPage={lastPage}
+  />
 </BaseLayout>

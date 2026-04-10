@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import PostList from "@components/PostList.svelte";
-import { processPosts } from "src/utils.ts"
+import PostList from "@components/PostList.astro";
+import { POSTS_PER_PAGE, processPosts } from "src/utils.ts";
 
 export async function getStaticPaths() {
   const allPosts = await getCollection("blog");
@@ -24,9 +24,15 @@ export async function getStaticPaths() {
 const { year } = Astro.params;
 const { posts } = Astro.props;
 const processedPosts = processPosts(posts);
+const lastPage = Math.ceil(processedPosts.length / POSTS_PER_PAGE);
 ---
 
 <BaseLayout title={year}>
   <h1 class="text-textColor dark:text-textColordark ml-4">{year} ({posts.length})</h1>
-  <PostList posts={processedPosts} client:load />
+  <PostList
+    posts={processedPosts.slice(0, POSTS_PER_PAGE)}
+    currentPage={1}
+    lastPage={lastPage}
+    pageBasePath={`/archives/${year}`}
+  />
 </BaseLayout>
