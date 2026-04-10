@@ -13,8 +13,6 @@ body.dark {
   --uno: font-sans;
 }
 
-
-
 .dark {
   color-scheme: dark;
 }
@@ -25,15 +23,14 @@ mark {
 
 .MDpost {
   --uno: text-textColor2 dark:text-textColor2dark leading-normal break-words;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji";
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .katex-display {
   --uno: text-textColor2 dark:text-textColor2dark;
 }
-
 
 .MDpost h1,
 .MDpost h2,
@@ -72,7 +69,6 @@ mark {
   --uno: border-l-solid border-l-4 border-l-bgColorb dark:border-l-bgColorbdark;
 }
 
-
 .MDpost code:not(.astro-code code) {
   --uno: bg-bgColor1 dark:bg-bgColor1dark pa-0.7 rounded-sm mx-1 font-mono text-sm;
 }
@@ -92,8 +88,7 @@ mark {
   --uno: py-5px px-10px border border-solid border-bgColorb dark:border-bgColorbdark;
 }
 
-.MDpost th
-{
+.MDpost th {
   --uno: bg-bgColorh dark:bg-bgColorhdark;
 }
 
@@ -105,7 +100,6 @@ mark {
 .MDpost pre {
   --uno: w-full rounded-lg relative;
 }
-
 
 .MDpost .astro-code code {
   --uno: text-14px rounded-lg leading-normal;
@@ -130,7 +124,7 @@ mark {
 
 .MDpost ul,
 .MDpost ol {
-  --uno: pl-8 ;
+  --uno: pl-8;
 }
 
 .MDpost ul {
@@ -143,27 +137,25 @@ mark {
 
 .copy-button {
   --uno: absolute top-4 right-4 w-10 h-10 rounded-md bg-[rgba(50,50,50,0.2)] text-textColor2dark hover:bg-[rgba(50,50,50,0.6)];
-  --uno:  transition-all duration-300 border-solid border-1 border-#2e2e32;
+  --uno: transition-all duration-300 border-solid border-1 border- #2e2e32;
   --uno: flex justify-center items-center;
-  --uno: opacity-0 group-hover:opacity-100 ;
+  --uno: opacity-0 group-hover:opacity-100;
   cursor: pointer;
 }
 
-
 .copied {
-  background-color: rgba(50,50,50,0.6);
+  background-color: rgba(50, 50, 50, 0.6);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   opacity: 100%;
 }
 
-
 .copied::before {
   display: flex;
-  background-color:rgba(50,50,50,0.6);
+  background-color: rgba(50, 50, 50, 0.6);
   align-items: center;
   justify-content: center;
-  content: 'Copied';
+  content: "Copied";
   position: absolute;
   right: 100%;
   transform: translateX(0);
@@ -175,7 +167,9 @@ mark {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition:
+    opacity 0.6s ease,
+    visibility 0.6s ease;
   height: 40px;
   box-sizing: border-box;
   border: solid 1px #2e2e32;
@@ -208,41 +202,38 @@ mark {
   --uno: no-underline text-textColor2 dark:text-textColor2dark hover:text-themeColor transition-all duration-300;
 }
 
-
 @keyframes fadeInX {
   0% {
-      transform: translateX(-2rem);
-      opacity: 0;
+    transform: translateX(-2rem);
+    opacity: 0;
   }
   100% {
-      transform: translateX(0);
-      opacity: 1;
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
-
 @keyframes fadeInY {
   0% {
-      transform: translateY(-2rem);
-      opacity: 0;
+    transform: translateY(-2rem);
+    opacity: 0;
   }
   100% {
-      transform: translateY(0);
-      opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes fadeInY1 {
   0% {
-      transform: translateY(2rem);
-      opacity: 0;
+    transform: translateY(2rem);
+    opacity: 0;
   }
   100% {
-      transform: translateY(0);
-      opacity: 1;
+    transform: translateY(0);
+    opacity: 1;
   }
 }
-
 
 @keyframes fadeIn {
   0% {
@@ -252,7 +243,6 @@ mark {
     opacity: 1;
   }
 }
-
 
 .onloadX {
   opacity: 0;
@@ -270,7 +260,6 @@ mark {
   opacity: 0;
   animation: fadeInY 500ms ease-in-out forwards;
 }
-
 
 .onload {
   opacity: 0;
