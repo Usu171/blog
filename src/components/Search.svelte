@@ -85,9 +85,9 @@ $effect(() => {
       class="px-4 pb-2 pt-4"
     ><form class="rounded-md h-16 border-solid border-2 border-themeColor flex items-center">
       <div class="text-3xl ml-3 h-10 w-10 my-0 i-mdi-search text-themeColor"></div>
-      <input placeholder="Search" type="text" bind:value={keyword} onfocus={() => search(keyword)}
-        class="w-full h-full transition-all text-xl bg-transparent outline-0
-      text-textColor2 dark:text-textColor2dark border-none pa-3"
+      <input id="search-input" placeholder="Search" type="text" bind:value={keyword} onfocus={() => search(keyword)}
+        class="w-full h-full transition-all text-xl bg-transparent
+      text-textColor2 dark:text-textColor2dark border-none outline-none pa-3"
       />
       {#if keyword}
       <button aria-label="Clear Input" class="text-3xl ml-3 i-mdi-close text-textColor2 dark:text-textColor2dark mr-3 cursor-pointer"
