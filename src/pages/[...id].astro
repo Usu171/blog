@@ -1,7 +1,7 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
-import { formatDate, generatePath, generateTOC, getMinCoverPath, getReadingMinutes } from "@/utils.ts";
 import MDPostLayout from "@layouts/MDPostLayout.astro";
+import { formatDate, generatePath, generateTOC, getMinCoverPath, getReadingMinutes } from "@/utils.ts";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -29,13 +29,8 @@ const readingMinutes = getReadingMinutes(remarkPluginFrontmatter.minutesRead);
 const wordCount = remarkPluginFrontmatter.words || 0;
 ---
 
-<MDPostLayout
-  title={post.data.title}
-  description={post.data.description}
-  image={cover}
-  isPost={true}
-  >{
-    toc && (
+<MDPostLayout title={post.data.title} description={post.data.description} image={cover} isPost={true}
+  >{toc && (
       <Fragment slot="sidebarb">
         <div id="toc"
           class="tococ hidden lg:block bg-bgColor dark:bg-bgColordark
@@ -43,17 +38,14 @@ const wordCount = remarkPluginFrontmatter.words || 0;
           set:html={toc}
         />
       </Fragment>
-    )
-  }
-  {
-    post.data.banner && (
+    )}
+  {post.data.banner && (
       <img
         src={post.data.banner}
         alt={post.data.title}
         class="w-100% h-100 object-cover rounded-lg mb-4"
       />
-    )
-  }
+    )}
   <div data-pagefind-body class="bg-bgColor dark:bg-bgColordark rounded-lg shadow-md a-300 pa-10">
     <div class="inline-flex items-center">
       <a
@@ -63,30 +55,16 @@ const wordCount = remarkPluginFrontmatter.words || 0;
       >
         {post.data.categories || "未分类"}
       </a>
-      <p
-        class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
-      >
-        {formatDate(post.data.date)}
-      </p>
-      <p
-        class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
-      >
-        {wordCount} 字
-      </p>
-      <p
-        class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
-      >
-        {readingMinutes} 分钟
+      <p class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold">{formatDate(post.data.date)}</p>
+      <p class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold">{wordCount}字</p>
+      <p class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold">
+        {readingMinutes}
+        分钟
       </p>
     </div>
-    <h1
-      class="text-5xl font-bold leading-snug text-textColor dark:text-textColordark my-3"
-    >
-      {post.data.title}
-    </h1>
+    <h1 class="text-5xl font-bold leading-snug text-textColor dark:text-textColordark my-3">{post.data.title}</h1>
     <span class="flex">
-      {
-        post.data.tags &&
+      {post.data.tags &&
           post.data.tags.map((tag: string) => (
             <a
               href={`/tags/${tag}`}
@@ -96,18 +74,13 @@ const wordCount = remarkPluginFrontmatter.words || 0;
               <p class="i-mdi-tag mr-1" />
               {tag}
             </a>
-          ))
-      }
+          ))}
     </span>
-    {
-      post.data.description && (
+    {post.data.description && (
         <p class="text-bgColorbdark dark:text-bgColorb">
           {post.data.description}
         </p>
-      )
-    }
-    <article class="MDpost">
-      <Content />
-    </article>
+      )}
+    <article class="MDpost"><Content /></article>
   </div>
 </MDPostLayout>

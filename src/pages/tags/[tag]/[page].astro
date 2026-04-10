@@ -4,11 +4,7 @@ import GroupedPostListPage from "@components/GroupedPostListPage.astro";
 import { getGroupedPaginatedStaticPaths, tagGroupConfig } from "@/grouped-posts.ts";
 
 export async function getStaticPaths({ paginate }) {
-  return getGroupedPaginatedStaticPaths(
-    await getCollection("blog"),
-    tagGroupConfig,
-    paginate
-  );
+  return getGroupedPaginatedStaticPaths(await getCollection("blog"), tagGroupConfig, paginate);
 }
 
 const { page, groupValue, totalCount, pageBasePath } = Astro.props;

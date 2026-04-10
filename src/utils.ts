@@ -3,7 +3,7 @@ import config from "./config.ts";
 
 export function generatePath(date: Date, id: string): string {
   const { year, month, day } = getDatePartsInTimeZone(date);
-  
+
   return `/${year}/${month}/${day}/${id}/`;
 }
 
@@ -34,14 +34,13 @@ export function formatDate(date: Date): string {
 }
 
 export function getMinCoverPath(coverPath: string): string {
-  const index = coverPath.indexOf('/img/');
+  const index = coverPath.indexOf("/img/");
   if (index === -1) {
     return coverPath;
   }
 
-  return coverPath.substring(0, index) + '/img/min/' + coverPath.substring(index + 5);
+  return coverPath.substring(0, index) + "/img/min/" + coverPath.substring(index + 5);
 }
-
 
 interface headings {
   depth: number;
@@ -50,34 +49,32 @@ interface headings {
 }
 
 export function generateTOC(items: headings[]): string {
-  let result = '';
-  let stack: string[] = [];
-  
-  for (let item of items) {
+  let result = "";
+  const stack: string[] = [];
+
+  for (const item of items) {
     const { depth, slug, text } = item;
 
     while (depth > stack.length) {
-      result += '<ul>'; 
-      stack.push('<ul>');
+      result += "<ul>";
+      stack.push("<ul>");
     }
 
     while (depth < stack.length) {
-      result += '</ul>';
+      result += "</ul>";
       stack.pop();
     }
 
     result += `<li><a href="#${slug}">${text}</a></li>`;
   }
 
-
   while (stack.length > 0) {
-    result += '</ul>';
+    result += "</ul>";
     stack.pop();
   }
 
   return result;
 }
-
 
 export interface ProcessedPost {
   id: string;
@@ -109,18 +106,12 @@ export async function processPosts(posts: any[]): Promise<ProcessedPost[]> {
         tags: post.data.tags || [],
         categories: post.data.categories || "未分类",
         cover: post.data.cover || "",
-        description: post.data.description
-          ? post.data.description
-          : post.body
-          ? post.body.slice(0, 100) + "..."
-          : "",
+        description: post.data.description || (post.body ? post.body.slice(0, 100) + "..." : ""),
         wordCount: remarkPluginFrontmatter.words || 0,
         minutesRead: getReadingMinutes(remarkPluginFrontmatter.minutesRead),
       };
-    })
+    }),
   );
 
-  return processedPosts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  return processedPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }

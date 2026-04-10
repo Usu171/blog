@@ -1,8 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
 import ButtonList from "@components/ButtonList.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { categoryGroupConfig, getGroupedIndexItems } from "@/grouped-posts.ts";
+
 const allPosts = await getCollection("blog");
 
 const title = categoryGroupConfig.title;

@@ -1,6 +1,6 @@
 ---
-import { formatDate, generatePath, getMinCoverPath } from "@/utils.ts";
 import type { ProcessedPost } from "@/utils.ts";
+import { formatDate, generatePath, getMinCoverPath } from "@/utils.ts";
 
 interface Props {
   posts: ProcessedPost[];
@@ -11,23 +11,16 @@ interface Props {
 
 const { posts, currentPage, lastPage, pageBasePath = "/" }: Props = Astro.props;
 
-const hasPagination =
-  typeof currentPage === "number" &&
-  typeof lastPage === "number" &&
-  lastPage > 1;
+const hasPagination = typeof currentPage === "number" && typeof lastPage === "number" && lastPage > 1;
 
-const pageNumbers = hasPagination
-  ? Array.from({ length: lastPage }, (_, index) => index + 1)
-  : [];
+const pageNumbers = hasPagination ? Array.from({ length: lastPage }, (_, index) => index + 1) : [];
 
 function getPageHref(pageNumber: number): string {
   if (pageNumber === 1) {
     return pageBasePath;
   }
 
-  return pageBasePath === "/"
-    ? `/${pageNumber}`
-    : `${pageBasePath}/${pageNumber}`;
+  return pageBasePath === "/" ? `/${pageNumber}` : `${pageBasePath}/${pageNumber}`;
 }
 
 const navButtonClass =
@@ -35,8 +28,7 @@ const navButtonClass =
 const disabledNavButtonClass = `${navButtonClass} opacity-60`;
 const pageButtonClass =
   "flex items-center justify-center w-10 h-10 rounded-md bg-bgColor2 dark:bg-bgColor2dark text-textColor dark:text-textColordark hover:bg-bgColorh dark:hover:bg-bgColorhdark a-300 no-underline";
-const currentPageClass =
-  "border-1 border-solid border-bgColorb dark:border-bgColorbdark cursor-default";
+const currentPageClass = "border-1 border-solid border-bgColorb dark:border-bgColorbdark cursor-default";
 ---
 
 <ul class="list-none flex flex-col gap-4 pa-0 ma-0">
@@ -118,8 +110,7 @@ const currentPageClass =
   ))}
 </ul>
 
-{
-  hasPagination && (
+{hasPagination && (
     <div class="flex justify-center my-5 gap-2">
       {
         currentPage === 1 ? (
@@ -168,5 +159,4 @@ const currentPageClass =
         )
       }
     </div>
-  )
-}
+  )}

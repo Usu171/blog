@@ -1,9 +1,10 @@
-import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { generatePath } from "@/utils.ts";
+import rss from "@astrojs/rss";
+import MarkdownIt from "markdown-it";
+import sanitizeHtml from "sanitize-html";
 import config from "@/config.ts";
-import sanitizeHtml from 'sanitize-html';
-import MarkdownIt from 'markdown-it';
+import { generatePath } from "@/utils.ts";
+
 const parser = new MarkdownIt();
 
 export async function GET(context) {
@@ -18,16 +19,11 @@ export async function GET(context) {
     items: blog.map((post) => ({
       title: post.data.title,
       pubDate: post.data.pubDate,
-      description: post.data.description
-        ? post.data.description
-        : post.body
-        ? post.body.slice(0, 100) + "..."
-        : "",
+      description: post.data.description || (post.body ? post.body.slice(0, 100) + "..." : ""),
       link: generatePath(post.data.date, post.id),
       content: sanitizeHtml(parser.render(post.body), {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'iframe'])
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "iframe"]),
       }),
-
     })),
     customData: `<language>zh-cn</language>`,
   });

@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import { POSTS_PER_PAGE, processPosts, type ProcessedPost } from "./utils.ts";
+import { POSTS_PER_PAGE, type ProcessedPost, processPosts } from "./utils.ts";
 
 type BlogPost = CollectionEntry<"blog">;
 
@@ -57,7 +57,7 @@ export const archiveGroupConfig = {
 
 function getGroupedEntries<ParamName extends string>(
   posts: BlogPost[],
-  config: GroupedPostConfig<ParamName>
+  config: GroupedPostConfig<ParamName>,
 ): GroupedPostEntry<ParamName>[] {
   const groupedPosts = new Map<string, BlogPost[]>();
 
@@ -91,7 +91,7 @@ function getGroupedEntries<ParamName extends string>(
 
 export function getGroupedIndexItems<ParamName extends string>(
   posts: BlogPost[],
-  config: GroupedPostConfig<ParamName>
+  config: GroupedPostConfig<ParamName>,
 ) {
   return getGroupedEntries(posts, config).map(({ groupValue, totalCount }) => ({
     item: groupValue,
@@ -101,7 +101,7 @@ export function getGroupedIndexItems<ParamName extends string>(
 
 export function getGroupedStaticPaths<ParamName extends string>(
   posts: BlogPost[],
-  config: GroupedPostConfig<ParamName>
+  config: GroupedPostConfig<ParamName>,
 ) {
   return getGroupedEntries(posts, config).map(({ params, ...props }) => ({
     params,
@@ -112,7 +112,14 @@ export function getGroupedStaticPaths<ParamName extends string>(
 export async function getGroupedPaginatedStaticPaths<ParamName extends string>(
   posts: BlogPost[],
   config: GroupedPostConfig<ParamName>,
-  paginate: (data: ProcessedPost[], options: { pageSize: number; params: Record<ParamName, string>; props: PaginationPageProps; }) => unknown[]
+  paginate: (
+    data: ProcessedPost[],
+    options: {
+      pageSize: number;
+      params: Record<ParamName, string>;
+      props: PaginationPageProps;
+    },
+  ) => unknown[],
 ) {
   const groupedEntries = getGroupedEntries(posts, config);
 
@@ -126,16 +133,14 @@ export async function getGroupedPaginatedStaticPaths<ParamName extends string>(
           totalCount,
           pageBasePath,
         },
-      })
-    )
+      }),
+    ),
   );
 
   return paginatedPaths.flat();
 }
 
-export async function getGroupedFirstPageProps<ParamName extends string>(
-  props: FirstPageProps<ParamName>
-) {
+export async function getGroupedFirstPageProps<ParamName extends string>(props: FirstPageProps<ParamName>) {
   const processedPosts = await processPosts(props.posts);
 
   return {

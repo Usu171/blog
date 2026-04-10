@@ -1,13 +1,13 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
 import ButtonList from "@components/ButtonList.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { getGroupedIndexItems, tagGroupConfig } from "@/grouped-posts.ts";
+
 const allPosts = await getCollection("blog");
 
 const title = tagGroupConfig.title;
 const tagCounts = getGroupedIndexItems(allPosts, tagGroupConfig);
-
 ---
 
 <BaseLayout title={title}>

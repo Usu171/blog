@@ -1,6 +1,6 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
 import PostList from "@components/PostList.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import type { ProcessedPost } from "@/utils.ts";
 
 interface Props {
@@ -16,11 +16,6 @@ const { groupValue, totalCount, pageBasePath, posts, currentPage, lastPage }: Pr
 ---
 
 <BaseLayout title={groupValue}>
-  <h1 class="text-textColor dark:text-textColordark ml-4">{groupValue} ({totalCount})</h1>
-  <PostList
-    posts={posts}
-    currentPage={currentPage}
-    lastPage={lastPage}
-    pageBasePath={pageBasePath}
-  />
+  <h1 class="text-textColor dark:text-textColordark ml-4">{groupValue}({totalCount})</h1>
+  <PostList posts={posts} currentPage={currentPage} lastPage={lastPage} pageBasePath={pageBasePath} />
 </BaseLayout>

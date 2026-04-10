@@ -1,35 +1,34 @@
 <script lang="ts">
-import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
-let isDark = $state(true);
+  let isDark = $state(true);
 
-onMount(() => {
-  if (localStorage.getItem("theme")) {
-    isDark = localStorage.getItem("theme") === "dark";
+  onMount(() => {
+    if (localStorage.getItem("theme")) {
+      isDark = localStorage.getItem("theme") === "dark";
+    }
+  });
+
+  function toggleTheme() {
+    isDark = !isDark;
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
   }
-});
 
-function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.classList.toggle("dark");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-}
-
-function toggleSidebar() {
-  document.querySelector(".sidebardiv").classList.toggle("hidden");
-  document.querySelector(".basediv").classList.toggle("lg:w-[calc(75%-2.5rem)]");
-  document.querySelector(".basediv").classList.toggle("w-full");
-}
-
-function toggleSearchbar() {
-  const searchbar = document.getElementById("searchbarbg");
-  if (searchbar) {
-    searchbar.classList.remove("hidden");
+  function toggleSidebar() {
+    document.querySelector(".sidebardiv").classList.toggle("hidden");
+    document.querySelector(".basediv").classList.toggle("lg:w-[calc(75%-2.5rem)]");
+    document.querySelector(".basediv").classList.toggle("w-full");
   }
-  document.body.classList.add("overflow-hidden");
-}
+
+  function toggleSearchbar() {
+    const searchbar = document.getElementById("searchbarbg");
+    if (searchbar) {
+      searchbar.classList.remove("hidden");
+    }
+    document.body.classList.add("overflow-hidden");
+  }
 </script>
-
 
 <button
   onclick={toggleSearchbar}

@@ -1,18 +1,13 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from "@layouts/BaseLayout.astro";
 import PostList from "@components/PostList.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
 import { POSTS_PER_PAGE, processPosts } from "@/utils.ts";
 
 const processedPosts = await processPosts(await getCollection("blog"));
 const lastPage = Math.ceil(processedPosts.length / POSTS_PER_PAGE);
 ---
 
-
 <BaseLayout>
-  <PostList
-    posts={processedPosts.slice(0, POSTS_PER_PAGE)}
-    currentPage={1}
-    lastPage={lastPage}
-  />
+  <PostList posts={processedPosts.slice(0, POSTS_PER_PAGE)} currentPage={1} lastPage={lastPage} />
 </BaseLayout>

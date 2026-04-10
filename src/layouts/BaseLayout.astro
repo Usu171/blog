@@ -1,8 +1,8 @@
 ---
+import Footer from "@components/Footer.astro";
 import Head from "@components/Head.astro";
 import Header from "@components/Header.astro";
 import SideBar from "@components/SideBar.astro";
-import Footer from "@components/Footer.astro";
 import config from "@/config.ts";
 
 const { title, description, image, isPost } = Astro.props;
@@ -17,13 +17,9 @@ const footerConfig = config as typeof config & {
   <body class="min-h-screen">
     <Header />
     <main class="flex justify-center">
-      <div
-        class="flex flex-col-reverse lg:flex-row lg:justify-between max-w-7xl w-full min-h-3xl"
-      >
+      <div class="flex flex-col-reverse lg:flex-row lg:justify-between max-w-7xl w-full min-h-3xl">
         <div class="sidebardiv lg:w-25% shrink-0 onloadX">
-          <SideBar>
-            <slot name="sidebarb" />
-          </SideBar>
+          <SideBar> <slot name="sidebarb" /> </SideBar>
         </div>
         <div class="basediv mt-24 lg:w-[calc(75%-2.5rem)] onload">
           <slot />
@@ -59,9 +55,7 @@ const footerConfig = config as typeof config & {
                   .writeText(codeText)
                   .then(() => {
                     button.classList.add("copied");
-                    const languageLabel = codeBlock.querySelector(
-                      ".language-label"
-                    );
+                    const languageLabel = codeBlock.querySelector(".language-label");
                     if (languageLabel) {
                       languageLabel.style.opacity = "0";
                     }
@@ -94,7 +88,7 @@ const footerConfig = config as typeof config & {
       }
 
       function showTheme() {
-        (function () {
+        (() => {
           const theme = localStorage.getItem("theme") || "dark";
           document.documentElement.classList.toggle("dark", theme === "dark");
         })();
@@ -113,9 +107,7 @@ const footerConfig = config as typeof config & {
         const currentDate = new Date();
         const targetDate = new Date(date);
         const timeDifference = currentDate.getTime() - targetDate.getTime();
-        const daysDifference = Math.floor(
-          timeDifference / (1000 * 60 * 60 * 24)
-        );
+        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         return daysDifference;
       }
 
