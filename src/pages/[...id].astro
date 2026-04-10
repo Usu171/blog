@@ -1,6 +1,6 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
-import { generatePath, generateTOC, getMinCoverPath } from "src/utils.ts";
+import { formatDate, generatePath, generateTOC, getMinCoverPath } from "src/utils.ts";
 import MDPostLayout from "@layouts/MDPostLayout.astro";
 
 export async function getStaticPaths() {
@@ -64,7 +64,7 @@ const toc = generateTOC(headings);
       <p
         class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
       >
-        {post.data.date.toLocaleDateString()}
+        {formatDate(post.data.date)}
       </p>
     </div>
     <h1
@@ -75,7 +75,7 @@ const toc = generateTOC(headings);
     <span class="flex">
       {
         post.data.tags &&
-          post.data.tags.map((tag) => (
+          post.data.tags.map((tag: string) => (
             <a
               href={`/tags/${tag}`}
               class="flex items-center h-7 px-2 mx-1 text-xs font-bold text-textColor2 dark:text-textColor2dark no-underline

@@ -1,5 +1,5 @@
 ---
-import { generatePath, getMinCoverPath } from "src/utils.ts";
+import { formatDate, generatePath, getMinCoverPath } from "src/utils.ts";
 import type { ProcessedPost } from "src/utils.ts";
 
 interface Props {
@@ -61,7 +61,7 @@ const currentPageClass =
               <p
                 class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"
               >
-                {post.date.toLocaleDateString()}
+                {formatDate(post.date)}
               </p>
               <p
                 class="text-textColor2 dark:text-textColor2dark ml-3 text-xs my-0 font-bold"

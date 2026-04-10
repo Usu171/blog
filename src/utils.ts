@@ -1,11 +1,35 @@
+import config from "./config.ts";
+
 export function generatePath(date: Date, id: string): string {
-  const newDate = new Date(date.getTime() - 8 * 60 * 60 * 1000);
-
-  const year = newDate.getFullYear().toString();
-  const month = String(newDate.getMonth() + 1).padStart(2, "0");
-  const day = String(newDate.getDate()).padStart(2, "0");
-
+  const { year, month, day } = getDatePartsInTimeZone(date);
+  
   return `/${year}/${month}/${day}/${id}/`;
+}
+
+function getDatePartsInTimeZone(date: Date): Record<"year" | "month" | "day", string> {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: config.TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+  const parts = formatter.formatToParts(date);
+
+  return {
+    year: parts.find((part) => part.type === "year")?.value ?? "",
+    month: parts.find((part) => part.type === "month")?.value ?? "",
+    day: parts.find((part) => part.type === "day")?.value ?? "",
+  };
+}
+
+export function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: config.TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
 }
 
 export function getMinCoverPath(coverPath: string): string {
