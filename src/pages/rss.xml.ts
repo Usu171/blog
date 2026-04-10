@@ -1,7 +1,7 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { generatePath } from "src/utils.ts";
-import config from "src/config.ts";
+import { generatePath } from "@/utils.ts";
+import config from "@/config.ts";
 import sanitizeHtml from 'sanitize-html';
 import MarkdownIt from 'markdown-it';
 const parser = new MarkdownIt();
