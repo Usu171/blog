@@ -37,3 +37,7 @@ img_png/
 *.py
 
 
+
+.dev.vars*
+!.dev.vars.example
+!.env.example

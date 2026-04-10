@@ -10,8 +10,11 @@ import svelte from "@astrojs/svelte";
 
 import sitemap from "@astrojs/sitemap";
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: "https://usu171.uk",
+
   integrations: [
     UnoCSS(),
     svelte(),
@@ -20,9 +23,11 @@ export default defineConfig({
       containers: ["main"],
     }),
   ],
+
   build: {
     // inlineStylesheets: `always`,
   },
+
   markdown: {
     remarkPlugins: [remarkMath, remarkReadingTime],
     rehypePlugins: [rehypeKatex],
@@ -30,4 +35,6 @@ export default defineConfig({
     //   theme: 'vitesse-dark',
     // },
   },
+
+  adapter: cloudflare()
 });
