@@ -3,8 +3,13 @@ import Head from "@components/Head.astro";
 import Header from "@components/Header.astro";
 import SideBar from "@components/SideBar.astro";
 import Footer from "@components/Footer.astro";
+import config from "@/config.ts";
 
 const { title, description, image, isPost } = Astro.props;
+const footerConfig = config as typeof config & {
+  BLOG_START_DATE: string;
+  COPYRIGHT_START_YEAR: number;
+};
 ---
 
 <html lang="zh-Hans">
@@ -26,7 +31,12 @@ const { title, description, image, isPost } = Astro.props;
         </div>
       </div>
     </main>
-    <script>
+    <script
+      define:vars={{
+        blogStartDate: footerConfig.BLOG_START_DATE,
+        copyrightStartYear: footerConfig.COPYRIGHT_START_YEAR,
+      }}
+    >
       async function addCopyButton() {
         await sleep(100);
         const codeBlocks = document.querySelectorAll(".MDpost .astro-code");
@@ -51,7 +61,7 @@ const { title, description, image, isPost } = Astro.props;
                     button.classList.add("copied");
                     const languageLabel = codeBlock.querySelector(
                       ".language-label"
-                    ) as HTMLElement;
+                    );
                     if (languageLabel) {
                       languageLabel.style.opacity = "0";
                     }
@@ -95,11 +105,11 @@ const { title, description, image, isPost } = Astro.props;
         document.body.style.opacity = "1";
       }
 
-      function sleep(ms: number) {
+      function sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
-      function calculateDaysSince(date: string): number {
+      function calculateDaysSince(date) {
         const currentDate = new Date();
         const targetDate = new Date(date);
         const timeDifference = currentDate.getTime() - targetDate.getTime();
@@ -136,7 +146,7 @@ const { title, description, image, isPost } = Astro.props;
       }
 
       function showFooter() {
-        const daysRunning = calculateDaysSince("2023-05-07");
+        const daysRunning = calculateDaysSince(blogStartDate);
         const duration = document.getElementById("blog-duration");
         if (duration) {
           duration.innerText = `${daysRunning}`;
@@ -144,7 +154,7 @@ const { title, description, image, isPost } = Astro.props;
         const currentYear = new Date().getFullYear();
         const footerYear = document.getElementById("blog-year");
         if (footerYear) {
-          footerYear.innerText = `© 2023 - ${currentYear}`;
+          footerYear.innerText = `© ${copyrightStartYear} - ${currentYear}`;
         }
       }
 

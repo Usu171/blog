@@ -6,10 +6,12 @@ export default {
   USERNAME: "Usu171",
   SITE_TITLE: "Usu171's Blog",
   SITE_URL: "https://usu171.uk",
-  TIME_ZONE: "UTC",
   USER_IMG: "/img/avatar.webp",
   favicon: "/img/favicon.webp",
   USER_EMIAL: "usu171@usu171.uk",
+  TIME_ZONE: "UTC",
+  BLOG_START_DATE: "2023-05-07",
+  COPYRIGHT_START_YEAR: 2023,
   Links: [
     {
       name: "GitHub",
