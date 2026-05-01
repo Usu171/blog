@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/svelte": "^8.0.4",
+    "@astrojs/svelte": "^8.1.0",
     "@swup/astro": "^1.8.0",
     "@unocss/reset": "^66.6.8",
     "astro": "^6.1.5",
